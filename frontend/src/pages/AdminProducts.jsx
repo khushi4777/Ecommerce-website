@@ -3,6 +3,8 @@ import AdminSidebar from "../components/AdminSidebar";
 import ProductForm from "../components/ProductForm";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL || "https://ecommerce-website-bqw8.onrender.com";
+
 function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,7 +15,7 @@ function AdminProducts() {
     setError("");
 
     axios
-      .get("http://localhost:5000/api/products")
+      .get(`${API_URL}/api/products`)
       .then((res) => setProducts(res.data))
       .catch(() => setError("Failed to load products"))
       .finally(() => setLoading(false));
@@ -27,7 +29,7 @@ function AdminProducts() {
     setError("");
 
     axios
-      .post("http://localhost:5000/api/products", {
+      .post(`${API_URL}/api/products`, {
         ...product,
         price: Number(product.price),
       })
@@ -41,7 +43,7 @@ function AdminProducts() {
     setError("");
 
     axios
-      .delete(`http://localhost:5000/api/products/${id}`)
+      .delete(`${API_URL}/api/products/${id}`)
       .then(() => {
         setProducts((prev) => prev.filter((p) => p._id !== id));
       })

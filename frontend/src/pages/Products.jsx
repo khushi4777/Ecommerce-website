@@ -4,6 +4,8 @@ import ProductCard from "../components/ProductCard";
 import { motion } from "framer-motion";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL || "https://ecommerce-website-bqw8.onrender.com";
+
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +21,7 @@ function Products() {
     const params = category ? `?category=${encodeURIComponent(category)}` : "";
 
     axios
-      .get(`http://localhost:5000/api/products${params}`)
+      .get(`${API_URL}/api/products${params}`)
       .then((res) => setProducts(res.data))
       .catch(() => {
         setError("Failed to load products");

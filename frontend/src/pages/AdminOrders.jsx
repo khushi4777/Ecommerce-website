@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
+const API_URL = import.meta.env.VITE_API_URL || "https://ecommerce-website-bqw8.onrender.com";
+
 function AdminOrders() {
 
   const [orders, setOrders] = useState([])
@@ -8,7 +10,7 @@ function AdminOrders() {
   useEffect(() => {
 
     axios
-      .get("http://localhost:5000/api/orders")
+      .get(`${API_URL}/api/orders`)
       .then(res => setOrders(res.data))
       .catch(err => console.log(err))
 
