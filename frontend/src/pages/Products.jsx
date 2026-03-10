@@ -6,7 +6,7 @@ import axios from "axios"
 useEffect(()=>{
 
 axios
-.get("http://localhost:5000/api/products")
+.get("https://ecommerce-website-9jn8.onrender.com/api/products")
 .then(res => setProducts(res.data))
 
 },[])
