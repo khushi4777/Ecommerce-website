@@ -1,24 +1,29 @@
 const express = require("express")
 const cors = require("cors")
 const dotenv = require("dotenv")
-const orderRoutes = require("./routes/orderRoutes")
 
+const productRoutes = require("./routes/productRoutes")
+const orderRoutes = require("./routes/orderRoutes")
+const authRoutes = require("./routes/authRoutes")
 const connectDB = require("./config/db")
 
 dotenv.config()
 
+// Connect to MongoDB
 connectDB()
 
 const app = express()
-const productRoutes = require("./routes/productRoutes")
 
-app.use("/api", productRoutes)
-
+// Middleware
 app.use(cors())
 app.use(express.json())
-app.use("/api", orderRoutes)
 
-app.get("/", (req,res)=>{
+// Routes
+app.use("/api", productRoutes)
+app.use("/api", orderRoutes)
+app.use("/api", authRoutes)
+
+app.get("/", (req, res) => {
   res.send("API Running")
 })
 

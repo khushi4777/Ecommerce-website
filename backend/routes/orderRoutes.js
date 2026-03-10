@@ -13,4 +13,27 @@ router.get("/orders", async (req, res) => {
   }
 })
 
+// CREATE an order
+router.post("/orders", async (req, res) => {
+  try {
+    const { userId, products, totalPrice } = req.body
+
+    if (!products || !Array.isArray(products) || products.length === 0) {
+      return res.status(400).json({ message: "Order must include products" })
+    }
+
+    const order = new Order({
+      userId: userId || "guest",
+      products,
+      totalPrice,
+      status: "Pending"
+    })
+
+    const saved = await order.save()
+    res.status(201).json(saved)
+  } catch (error) {
+    res.status(400).json({ message: "Error creating order" })
+  }
+})
+
 module.exports = router

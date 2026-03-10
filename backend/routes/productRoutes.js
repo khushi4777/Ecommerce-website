@@ -3,30 +3,51 @@ const router = express.Router()
 
 const Product = require("../models/Product")
 
+// GET products (optionally filtered by category)
 router.get("/products", async (req, res) => {
-
-  const products = await Product.find()
-
-  res.json(products)
-
+  try {
+    const { category } = req.query
+    const query = category ? { category } : {}
+    const products = await Product.find(query)
+    res.json(products)
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching products" })
+  }
 })
 
+// CREATE a product
 router.post("/products", async (req, res) => {
+  try {
+    const { name, price, image, category, description, stock } = req.body
 
-  const product = new Product(req.body)
+    if (!name || !price || !image || !category) {
+      return res.status(400).json({ message: "Missing required fields" })
+    }
 
-  await product.save()
+    const product = new Product({
+      name,
+      price,
+      image,
+      category,
+      description: description || "",
+      stock: stock ?? 0
+    })
 
-  res.json(product)
-
+    const saved = await product.save()
+    res.status(201).json(saved)
+  } catch (error) {
+    res.status(400).json({ message: "Error creating product" })
+  }
 })
 
+// DELETE a product
 router.delete("/products/:id", async (req, res) => {
-
-  await Product.findByIdAndDelete(req.params.id)
-
-  res.json({ message: "Product deleted" })
-
+  try {
+    await Product.findByIdAndDelete(req.params.id)
+    res.json({ message: "Product deleted" })
+  } catch (error) {
+    res.status(400).json({ message: "Error deleting product" })
+  }
 })
 
 module.exports = router
